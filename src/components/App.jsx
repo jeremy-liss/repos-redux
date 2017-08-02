@@ -1,13 +1,17 @@
 import React from 'react'
 
-import LoadSubreddit from './LoadSubreddit'
-import SubredditContainer from '../containers/SubredditContainer'
+import RepoList from './RepoList'
 
-const App = () => (
-  <div className='app-container'>
-    <LoadSubreddit />
-    <SubredditContainer />
-  </div>
-)
+var App = React.createClass({
+
+  render: function () {
+    return (
+      <div>
+        <h2>Public Repos per User</h2>
+        <RepoList />
+      </div>
+    )
+  }
+})
 
 export default App

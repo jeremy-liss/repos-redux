@@ -1,8 +1,7 @@
 import {combineReducers} from 'redux'
 
-import subreddits from './subreddits'
+import repos from './repos'
 
 export default combineReducers({
-  subreddits
+  repos
 })
-

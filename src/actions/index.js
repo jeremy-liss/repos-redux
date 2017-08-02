@@ -1,22 +1,40 @@
-import request from 'superagent'
-
-export const receivePosts = (posts) => {
+const receiveRepos = (repos) => {
   return {
-    type: 'RECEIVE_POSTS',
-    posts: posts.map(post => post.data)
+    type: 'RECEIVE_REPOS',
+    repos: repos
   }
 }
 
-export function fetchPosts (subreddit) {
-  return (dispatch) => {
-    request
-      .get(`http://www.reddit.com/r/${subreddit}.json`)
-      .end((err, res) => {
-        if (err) {
-          console.error(err.message)
-          return
-        }
-        dispatch(receivePosts(res.body.data.children))
-      })
+const receiveError = (error) => {
+  return {
+    type: 'RECEIVE_ERROR',
+    error: error
   }
 }
+
+const recieveSortedRepos = (repos) => {
+  return {
+    type: 'SORT_REPOS',
+    repos: repos
+  }
+}
+
+const getUserAPI = (username) => {
+  return (dispatch) => {
+    $.ajax('https://api.github.com/users/' + username + '/repos')
+    .done(function (data) {
+      dispatch(receiveRepos(data))
+    })
+    .fail(function (jqXHR, textStatus) {
+      if (jqXHR.status === 404) {
+        dispatch(receiveError('Not Found, Check Username'))
+      }
+      if (jqXHR.status === 500) {
+        dispatch(receiveError('There is a GitHub Server Error'))
+      }
+      console.log('err:', textStatus)
+    })
+  }
+}
+
+export { getUserAPI, recieveSortedRepos }
